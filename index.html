@@ -250,17 +250,38 @@
     z-index: -1; /* behind everything */
 }
 
-.chat-container {
+ .chat-container {
     position: relative;
     z-index: 1; /* must be on top of video */
+    width: 100%;
+    max-width: 600px;
+    height: 90vh; /* 90% of viewport height */
+    max-height: 800px;
+    background: rgba(245, 237, 217, 0.5); /* 50% opacity */
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+    .chat-container {
+        max-width: 95vw; /* 95% of viewport width */
+        height: 85vh; /* 85% of viewport height on mobile */
+        border-radius: 15px;
+        margin: 0 10px;
+
+}
 }
 
 </style>
 </head>
 <body>
 
-<!-- Background video -->
-<video autoplay muted loop id="bg-video">
+<!--<!-- Background video -->
+<video autoplay muted loop playsinline webkit-playsinline preload="auto" id="bg-video">
     <source src="https://cdn.pixabay.com/video/2023/08/17/176434-855480487_large.mp4" type="video/mp4">
 </video>
 
@@ -1016,17 +1037,17 @@ const activationImages = {
     
     let content = '';
     
-    // Add media if provided
-    if (mediaUrl && mediaType) {
-        if (mediaType === 'video') {
-            content += `<video autoplay muted loop style="width: 100%; max-width: 280px; border-radius: 10px; margin-bottom: 10px; pointer-events: none;">
-                <source src="${mediaUrl}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video><br>`;
-        } else if (mediaType === 'image') {
-            content += `<img src="${mediaUrl}" style="width: 100%; max-width: 280px; border-radius: 10px; margin-bottom: 10px;" alt="Message image"><br>`;
-        }
+   // Add media if provided
+if (mediaUrl && mediaType) {
+    if (mediaType === 'video') {
+        content += `<video autoplay muted loop playsinline webkit-playsinline style="width: 100%; max-width: 280px; border-radius: 10px; margin-bottom: 10px; pointer-events: none; display: block;">
+            <source src="${mediaUrl}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video><br>`;
+    } else if (mediaType === 'image') {
+        content += `<img src="${mediaUrl}" style="width: 100%; max-width: 280px; border-radius: 10px; margin-bottom: 10px;" alt="Message image"><br>`;
     }
+}
     
     // Add text content
     content += text.replace(/\n/g, '<br>');
